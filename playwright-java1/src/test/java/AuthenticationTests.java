@@ -1,16 +1,39 @@
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.junit.UsePlaywright;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 //npx playwright codegen demo.playwright.dev/todomvc
 //npx playwright codegen saucedemo.com
 
-@UsePlaywright
+//@UsePlaywright
 public class AuthenticationTests {
+    private Page page;
+
+    @BeforeAll
+    static void setup() {
+        PlaywrightUtils.setUp();
+    }
+
+    @BeforeEach
+    void setUp() {
+        page = PlaywrightUtils.createPage();
+    }
+
+    @AfterEach
+    void tearDownEach() {
+        if (page != null) {
+            page.close();
+        }
+    }
+
+    @AfterAll
+    static void tearDownClass() {
+        PlaywrightUtils.tearDown();
+    }
+
     @Test
     @DisplayName("Invalid Login")
-    void test(Page page) {
+    void test() {
         page.navigate("https://www.saucedemo.com/");
         page.locator("[data-test=\"username\"]").click();
         page.locator("[data-test=\"username\"]").fill("standard_user1");
